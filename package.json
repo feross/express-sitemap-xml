@@ -1,6 +1,6 @@
 {
   "name": "express-sitemap-xml",
-  "description": "Serve sitemap.xml from a list of URLs in Express",
+  "description": "Express middlware to serve `sitemap.xml` from a list of URLs",
   "version": "1.0.0",
   "author": {
     "name": "Feross Aboukhadijeh",

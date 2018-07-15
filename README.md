@@ -9,7 +9,9 @@
 [standard-image]: https://img.shields.io/badge/code_style-standard-brightgreen.svg
 [standard-url]: https://standardjs.com
 
-### Serve sitemap.xml from a list of URLs in Express
+### Express middlware to serve `sitemap.xml` from a list of URLs
+
+Create an Express middleware that serves `sitemap.xml` from a list of URLs.
 
 This package automatically handles sitemaps with more than 50,000 URLs. In these
 cases, multiple sitemap files will be generated along with a "sitemap index" to
@@ -41,9 +43,9 @@ const expressSitemapXml = require('express-sitemap-xml')
 
 const app = express()
 
-app.use(expressSitemapXml(loadUrls, 'https://bitmidi.com'))
+app.use(expressSitemapXml(getUrls, 'https://bitmidi.com'))
 
-async function loadUrls () {
+async function getUrls () {
   return await getUrlsFromDatabase()
 }
 ```
@@ -95,11 +97,11 @@ Sitemap: https://bitmidi.com/sitemap.xml
 
 ## API
 
-### `middleware = expressSitemapXml(loadUrls, base)`
+### `middleware = expressSitemapXml(getUrls, base)`
 
 Create a `sitemap.xml` middleware. Both arguments are required.
 
-The `loadUrls` argument specifies an async function that resolves to an array of
+The `getUrls` argument specifies an async function that resolves to an array of
 URLs to be included in the sitemap. Each URL in the array can either be an
 absolute or relative URL string like `'/1'`, or an object specifying additional
 options about the URL:
@@ -114,6 +116,9 @@ options about the URL:
 
 For more information about these options, see the [sitemap spec](https://www.sitemaps.org/protocol.html). Note that the `priority` option is not supported because [Google ignores it](https://twitter.com/methode/status/846796737750712320).
 
+The `getUrls` function is called at most once per 24 hours. The resulting
+sitemap(s) are cached to make repeated HTTP requests faster.
+
 The `base` argument specifies the base URL to be used in case any URLs are
 specified as relative URLs. The argument is also used if a sitemap index needs
 to be generated and sitemap locations need to be specified, e.g.
@@ -122,7 +127,7 @@ to be generated and sitemap locations need to be specified, e.g.
 ### `sitemaps = expressSitemapXml.buildSitemaps(urls, base)`
 
 Create an object where the keys are sitemap URLs to be served by the server and
-the values are strings of sitemap XML content.
+the values are strings of sitemap XML content. (This function does no caching.)
 
 The `urls` argument is an array of URLs to be included in the sitemap. Each URL
 in the array can either be an absolute or relative URL string like `'/1'`, or an

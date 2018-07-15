@@ -9,18 +9,18 @@ const MAX_SITEMAP_LENGTH = 50 * 1000 // Max URLs in a sitemap (defined by spec)
 const SITEMAP_URL_RE = /\/sitemap(-\d+)?\.xml/ // Sitemap url pattern
 const SITEMAP_MAX_AGE = 24 * 60 * 60 * 1000 // Cache sitemaps for 24 hours
 
-function expressSitemapXml (loadUrls, base) {
-  if (typeof loadUrls !== 'function') {
-    throw new Error('Argument `loadUrls` must be a function')
+function expressSitemapXml (getUrls, base) {
+  if (typeof getUrls !== 'function') {
+    throw new Error('Argument `getUrls` must be a function')
   }
   if (typeof base !== 'string') {
     throw new Error('Argument `base` must be a string')
   }
 
   async function loadSitemaps () {
-    const urls = await loadUrls()
+    const urls = await getUrls()
     if (!Array.isArray(urls)) {
-      throw new Error('async function `loadUrls` must resolve to an Array')
+      throw new Error('async function `getUrls` must resolve to an Array')
     }
     return buildSitemaps(urls, base)
   }

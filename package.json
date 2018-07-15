@@ -1,0 +1,46 @@
+{
+  "name": "express-sitemap-xml",
+  "description": "Serve sitemap.xml from a list of URLs in Express",
+  "version": "0.0.0",
+  "author": {
+    "name": "Feross Aboukhadijeh",
+    "email": "feross@feross.org",
+    "url": "https://feross.org"
+  },
+  "bugs": {
+    "url": "https://github.com/feross/express-sitemap-xml/issues"
+  },
+  "dependencies": {
+    "mem": "^3.0.1",
+    "xmlbuilder": "^10.0.0"
+  },
+  "devDependencies": {
+    "common-tags": "^1.8.0",
+    "standard": "*",
+    "tape": "^4.9.1"
+  },
+  "homepage": "https://github.com/feross/express-sitemap-xml",
+  "keywords": [
+    "express",
+    "google",
+    "serve sitemap",
+    "serve sitemap.xml",
+    "site map",
+    "site map xml",
+    "sitemap",
+    "sitemap generator",
+    "sitemap xml",
+    "sitemap.xml",
+    "sitemaps",
+    "xml"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/feross/express-sitemap-xml.git"
+  },
+  "scripts": {
+    "test": "standard && tape test/**/*.js"
+  }
+}

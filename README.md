@@ -9,7 +9,7 @@
 [standard-image]: https://img.shields.io/badge/code_style-standard-brightgreen.svg
 [standard-url]: https://standardjs.com
 
-### Express middlware to serve `sitemap.xml` from a list of URLs
+### Express middleware to serve `sitemap.xml` from a list of URLs
 
 Create an Express middleware that serves `sitemap.xml` from a list of URLs.
 

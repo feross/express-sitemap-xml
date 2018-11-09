@@ -32,6 +32,7 @@ function expressSitemapXml (getUrls, base) {
     if (isSitemapUrl) {
       const sitemaps = await memoizedLoad()
       if (sitemaps[req.url]) {
+        res.setHeader('Content-Type', 'application/xml')
         return res.status(200).send(sitemaps[req.url])
       }
     }

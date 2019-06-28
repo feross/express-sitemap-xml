@@ -25,7 +25,10 @@ function expressSitemapXml (getUrls, base) {
     return buildSitemaps(urls, base)
   }
 
-  const memoizedLoad = mem(loadSitemaps, { maxAge: SITEMAP_MAX_AGE })
+  const memoizedLoad = mem(loadSitemaps, {
+    maxAge: SITEMAP_MAX_AGE,
+    cachePromiseRejection: false
+  })
 
   return async (req, res, next) => {
     const isSitemapUrl = SITEMAP_URL_RE.test(req.url)

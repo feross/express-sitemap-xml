@@ -1,5 +1,7 @@
 # express-sitemap-xml [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![javascript style guide][standard-image]][standard-url]
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/feross/express-sitemap-xml.svg)](https://greenkeeper.io/)
+
 [travis-image]: https://img.shields.io/travis/feross/express-sitemap-xml/master.svg
 [travis-url]: https://travis-ci.org/feross/express-sitemap-xml
 [npm-image]: https://img.shields.io/npm/v/express-sitemap-xml.svg

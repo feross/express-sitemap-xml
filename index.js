@@ -119,9 +119,7 @@ function buildSitemap (urls, base) {
 
 function buildXml (obj) {
   const opts = {
-    encoding: 'utf-8',
-    skipNullAttributes: true,
-    skipNullNodes: true
+    encoding: 'utf-8'
   }
   const xml = builder.create(obj, opts)
   return xml.end({ pretty: true, allowEmpty: false })

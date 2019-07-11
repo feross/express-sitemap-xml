@@ -87,7 +87,7 @@ test('large test: use sitemap index for > 50,000 urls', t => {
   buildSitemaps(urls, 'https://bitmidi.com').then(sitemaps => {
     t.deepEqual(
       new Set(Object.keys(sitemaps)),
-      new Set([ '/sitemap.xml', '/sitemap-0.xml', '/sitemap-1.xml' ]))
+      new Set(['/sitemap.xml', '/sitemap-0.xml', '/sitemap-1.xml']))
 
     t.equal(
       sitemaps['/sitemap.xml'],

@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "common-tags": "^1.8.0",
-    "standard": "*",
+    "standard": ">=13.0.1",
     "tape": "^4.9.1"
   },
   "homepage": "https://github.com/feross/express-sitemap-xml",

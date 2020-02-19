@@ -99,7 +99,7 @@ function buildSitemap (urls, base) {
 
     const urlObj = {
       loc: toAbsolute(url.url, base),
-      lastmod: (url.lastMod && dateToString(url.lastMod)) || getTodayStr()
+      lastmod: (url.lastmod && dateToString(url.lastmod)) || getTodayStr()
     }
 
     if (typeof url.changefreq === 'string') {

@@ -109,7 +109,7 @@ options about the URL:
 ```js
 {
   url: '/1',
-  lastMod: new Date('2000-02-02'),
+  lastmod: new Date('2000-02-02'),
   changefreq: 'weekly',
   priority: 0.5
 }

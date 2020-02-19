@@ -115,6 +115,31 @@ options about the URL:
 }
 ```
 
+You can also use additional attributes. If you do so they will be processed by the `xmlbuilder` package and you should format them accordingly.
+For example, if you want to add multi language alternate attributes, you can do
+
+```js
+{
+  url: '/1',
+  lastmod: new Date('2000-02-02'),
+  changefreq: 'weekly',
+  priority: 0.5,
+  'xhtml:link': [
+    {
+      '@rel': 'alternate',
+      '@hreflang': 'fr',
+      '@href': 'https://bitmidi.com/1?lang=fr', // we repeat the url here as you may have a different subdomain for this
+    },
+    {
+      '@rel': 'alternate',
+      '@hreflang': 'es',
+      '@href': 'https://bitmidi.com/1?lang=es',
+    }
+  ]
+}
+```
+
+
 For more information about these options, see the [sitemap spec](https://www.sitemaps.org/protocol.html). Note that the `priority` option is not supported because [Google ignores it](https://twitter.com/methode/status/846796737750712320).
 
 The `getUrls` function is called at most once per 24 hours. The resulting

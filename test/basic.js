@@ -14,7 +14,7 @@ test('basic usage', t => {
 
     t.equal(sitemaps['/sitemap.xml'], stripIndent`
       <?xml version="1.0" encoding="utf-8"?>
-      <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+      <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
         <url>
           <loc>https://bitmidi.com/1</loc>
           <lastmod>${getTodayStr()}</lastmod>
@@ -38,13 +38,37 @@ test('usage with all options', t => {
   const urls = [
     {
       url: '/1',
-      lastMod: '2000-01-01',
-      changeFreq: 'daily'
+      lastmod: '2000-01-01',
+      changefreq: 'daily',
+      'xhtml:link': [
+        {
+          '@rel': 'alternate',
+          '@hreflang': 'fr',
+          '@href': 'https://bitmidi.com/1?lang=fr'
+        },
+        {
+          '@rel': 'alternate',
+          '@hreflang': 'es',
+          '@href': 'https://bitmidi.com/1?lang=es'
+        }
+      ]
     },
     {
       url: '/2',
-      lastMod: new Date('2000-02-02'),
-      changeFreq: 'weekly'
+      lastmod: new Date('2000-02-02'),
+      changefreq: 'weekly',
+      'xhtml:link': [
+        {
+          '@rel': 'alternate',
+          '@hreflang': 'fr',
+          '@href': 'https://bitmidi.com/2?lang=fr'
+        },
+        {
+          '@rel': 'alternate',
+          '@hreflang': 'es',
+          '@href': 'https://bitmidi.com/2?lang=es'
+        }
+      ]
     },
     {
       url: '/3'
@@ -56,15 +80,19 @@ test('usage with all options', t => {
 
     t.equal(sitemaps['/sitemap.xml'], stripIndent`
       <?xml version="1.0" encoding="utf-8"?>
-      <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+      <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
         <url>
           <loc>https://bitmidi.com/1</loc>
           <lastmod>2000-01-01</lastmod>
+          <xhtml:link rel="alternate" hreflang="fr" href="https://bitmidi.com/1?lang=fr"/>
+          <xhtml:link rel="alternate" hreflang="es" href="https://bitmidi.com/1?lang=es"/>
           <changefreq>daily</changefreq>
         </url>
         <url>
           <loc>https://bitmidi.com/2</loc>
           <lastmod>2000-02-02</lastmod>
+          <xhtml:link rel="alternate" hreflang="fr" href="https://bitmidi.com/2?lang=fr"/>
+          <xhtml:link rel="alternate" hreflang="es" href="https://bitmidi.com/2?lang=es"/>
           <changefreq>weekly</changefreq>
         </url>
         <url>
@@ -93,16 +121,19 @@ test('large test: use sitemap index for > 50,000 urls', t => {
       sitemaps['/sitemap.xml'],
       readFileSync(join(__dirname, 'large-sitemap.xml'), 'utf8')
         .replace(/2018-07-15/g, getTodayStr())
+        .replace(/\n$/g, '')
     )
     t.equal(
       sitemaps['/sitemap-0.xml'],
       readFileSync(join(__dirname, 'large-sitemap-0.xml'), 'utf8')
         .replace(/2018-07-15/g, getTodayStr())
+        .replace(/\n$/g, '')
     )
     t.equal(
       sitemaps['/sitemap-1.xml'],
       readFileSync(join(__dirname, 'large-sitemap-1.xml'), 'utf8')
         .replace(/2018-07-15/g, getTodayStr())
+        .replace(/\n$/g, '')
     )
   })
 })

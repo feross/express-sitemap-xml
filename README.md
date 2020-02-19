@@ -180,6 +180,15 @@ Or if multiple sitemaps are needed, then the return object looks like this:
 }
 ```
 
+## CHANGELOG
+
+### From 1.1.0 to 2.0
+
+BREAKING CHANGE:
+- `lastMod` has been replaced with `lastmod`
+- `changeFreq` has been replaced with `changefreq`
+
+
 ## License
 
 MIT. Copyright (c) [Feross Aboukhadijeh](https://feross.org).

@@ -104,6 +104,9 @@ function buildSitemap (urls, base) {
     if (typeof url.changeFreq === 'string') {
       urlObj.changefreq = url.changeFreq
     }
+    if (typeof url.priority === 'number') {
+      urlObj.priority = priority
+    }
     return urlObj
   })
 

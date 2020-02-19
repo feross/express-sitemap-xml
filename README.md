@@ -110,7 +110,8 @@ options about the URL:
 {
   url: '/1',
   lastMod: new Date('2000-02-02'),
-  changeFreq: 'weekly'
+  changeFreq: 'weekly',
+  priority: 0.5
 }
 ```
 

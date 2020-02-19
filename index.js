@@ -101,8 +101,9 @@ function buildSitemap (urls, base) {
       loc: toAbsolute(url.url, base),
       lastmod: (url.lastMod && dateToString(url.lastMod)) || getTodayStr()
     }
-    if (typeof url.changeFreq === 'string') {
-      urlObj.changefreq = url.changeFreq
+
+    if (typeof url.changefreq === 'string') {
+      urlObj.changefreq = url.changefreq
     }
     if (typeof url.priority === 'number') {
       urlObj.priority = priority

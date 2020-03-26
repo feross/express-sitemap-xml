@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "mem": "^5.1.0",
-    "xmlbuilder": "^13.0.2"
+    "xmlbuilder": "^15.1.0"
   },
   "devDependencies": {
     "common-tags": "^1.8.0",

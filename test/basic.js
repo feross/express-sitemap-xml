@@ -7,7 +7,7 @@ const { stripIndent } = require('common-tags')
 test('basic usage', t => {
   t.plan(2)
 
-  const urls = ['/1', '/2', '/3']
+  const urls = ['', '/', '/1', '/2', '/3']
 
   buildSitemaps(urls, 'https://bitmidi.com').then(sitemaps => {
     t.deepEqual(new Set(Object.keys(sitemaps)), new Set(['/sitemap.xml']))
@@ -15,6 +15,14 @@ test('basic usage', t => {
     t.equal(sitemaps['/sitemap.xml'], stripIndent`
       <?xml version="1.0" encoding="utf-8"?>
       <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+        <url>
+          <loc>https://bitmidi.com</loc>
+          <lastmod>${getTodayStr()}</lastmod>
+        </url>
+        <url>
+          <loc>https://bitmidi.com/</loc>
+          <lastmod>${getTodayStr()}</lastmod>
+        </url>
         <url>
           <loc>https://bitmidi.com/1</loc>
           <lastmod>${getTodayStr()}</lastmod>

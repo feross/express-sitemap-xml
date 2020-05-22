@@ -135,5 +135,11 @@ function dateToString (date) {
 }
 
 function toAbsolute (url, base) {
-  return new URL(url, base).href
+  let absoluteUrl = new URL(url, base).href
+
+  if (url === '') {
+    absoluteUrl = absoluteUrl.replace(/\/$/, '')
+  }
+
+  return absoluteUrl
 }

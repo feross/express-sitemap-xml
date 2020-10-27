@@ -1,3 +1,4 @@
+/*! express-sitemap-xml. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
 module.exports = expressSitemapXml
 module.exports.buildSitemaps = buildSitemaps
 

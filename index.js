@@ -2,7 +2,7 @@ module.exports = expressSitemapXml
 module.exports.buildSitemaps = buildSitemaps
 
 const builder = require('xmlbuilder')
-const mem = require('mem')
+const pMemoize = require('p-memoize')
 const { URL } = require('url') // TODO: Remove once Node 8 support is dropped
 
 const MAX_SITEMAP_LENGTH = 50 * 1000 // Max URLs in a sitemap (defined by spec)
@@ -25,9 +25,8 @@ function expressSitemapXml (getUrls, base) {
     return buildSitemaps(urls, base)
   }
 
-  const memoizedLoad = mem(loadSitemaps, {
-    maxAge: SITEMAP_MAX_AGE,
-    cachePromiseRejection: false
+  const memoizedLoad = pMemoize(loadSitemaps, {
+    maxAge: SITEMAP_MAX_AGE
   })
 
   return async (req, res, next) => {

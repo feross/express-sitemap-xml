@@ -109,8 +109,8 @@ options about the URL:
 ```js
 {
   url: '/1',
-  lastMod: new Date('2000-02-02'),
-  changeFreq: 'weekly'
+  lastMod: new Date('2000-02-02'), // optional (specify `true` for today's date)
+  changeFreq: 'weekly' // optional
 }
 ```
 

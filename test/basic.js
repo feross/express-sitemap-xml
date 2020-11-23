@@ -17,15 +17,12 @@ test('basic usage', t => {
       <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
         <url>
           <loc>https://bitmidi.com/1</loc>
-          <lastmod>${getTodayStr()}</lastmod>
         </url>
         <url>
           <loc>https://bitmidi.com/2</loc>
-          <lastmod>${getTodayStr()}</lastmod>
         </url>
         <url>
           <loc>https://bitmidi.com/3</loc>
-          <lastmod>${getTodayStr()}</lastmod>
         </url>
       </urlset>
     `)
@@ -47,8 +44,13 @@ test('usage with all options', t => {
       changeFreq: 'weekly'
     },
     {
-      url: '/3'
-    }
+      url: '/3',
+      lastMod: true
+    },
+    {
+      url: '/4'
+    },
+    '/5'
   ]
 
   buildSitemaps(urls, 'https://bitmidi.com').then(sitemaps => {
@@ -71,6 +73,12 @@ test('usage with all options', t => {
           <loc>https://bitmidi.com/3</loc>
           <lastmod>${getTodayStr()}</lastmod>
         </url>
+        <url>
+          <loc>https://bitmidi.com/4</loc>
+        </url>
+        <url>
+          <loc>https://bitmidi.com/5</loc>
+        </url>
       </urlset>
     `)
   })
@@ -81,7 +89,10 @@ test('large test: use sitemap index for > 50,000 urls', t => {
 
   const urls = []
   for (let i = 0; i < 60000; i++) {
-    urls.push(`/${i}`)
+    urls.push({
+      url: `/${i}`,
+      lastMod: true
+    })
   }
 
   buildSitemaps(urls, 'https://bitmidi.com').then(sitemaps => {

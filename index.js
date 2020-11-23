@@ -86,8 +86,7 @@ function buildSitemap (urls, base) {
   const urlObjs = urls.map(url => {
     if (typeof url === 'string') {
       return {
-        loc: toAbsolute(url, base),
-        lastmod: getTodayStr()
+        loc: toAbsolute(url, base)
       }
     }
 
@@ -98,9 +97,14 @@ function buildSitemap (urls, base) {
     }
 
     const urlObj = {
-      loc: toAbsolute(url.url, base),
-      lastmod: (url.lastMod && dateToString(url.lastMod)) || getTodayStr()
+      loc: toAbsolute(url.url, base)
     }
+    if (url.lastMod === true) {
+      urlObj.lastmod = getTodayStr()
+    } else if (typeof url.lastMod === 'string' || url.lastMod instanceof Date) {
+      urlObj.lastmod = dateToString(url.lastMod)
+    }
+
     if (typeof url.changeFreq === 'string') {
       urlObj.changefreq = url.changeFreq
     }

@@ -149,6 +149,7 @@ function dateToString (date) {
 }
 
 function toAbsolute (url, base) {
+  if (!url.startsWith('/')) return url
   const { origin, pathname } = new URL(base)
   const relative = pathname === '/' ? url : removeTrailingSlash(pathname) + url
   return new URL(relative, origin).href

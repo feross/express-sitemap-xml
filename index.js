@@ -10,6 +10,12 @@ const MAX_SITEMAP_LENGTH = 50 * 1000 // Max URLs in a sitemap (defined by spec)
 const SITEMAP_URL_RE = /\/sitemap(-\d+)?\.xml/ // Sitemap url pattern
 const SITEMAP_MAX_AGE = 24 * 60 * 60 * 1000 // Cache sitemaps for 24 hours
 
+const TRAILING_SLASH_RE = /\/+$/
+
+function removeTrailingSlash (str) {
+  return str.replace(TRAILING_SLASH_RE, '')
+}
+
 function expressSitemapXml (getUrls, base) {
   if (typeof getUrls !== 'function') {
     throw new Error('Argument `getUrls` must be a function')
@@ -139,5 +145,7 @@ function dateToString (date) {
 }
 
 function toAbsolute (url, base) {
-  return new URL(url, base).href
+  const { origin, pathname } = new URL(base)
+  const relative = pathname === '/' ? url : removeTrailingSlash(pathname) + url
+  return new URL(relative, origin).href
 }

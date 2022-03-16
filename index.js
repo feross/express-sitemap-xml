@@ -16,7 +16,11 @@ function removeTrailingSlash (str) {
   return str.replace(TRAILING_SLASH_RE, '')
 }
 
-function expressSitemapXml (getUrls, base) {
+function expressSitemapXml (
+  getUrls,
+  base,
+  { size = MAX_SITEMAP_LENGTH, maxAge = SITEMAP_MAX_AGE } = {}
+) {
   if (typeof getUrls !== 'function') {
     throw new Error('Argument `getUrls` must be a function')
   }
@@ -29,12 +33,10 @@ function expressSitemapXml (getUrls, base) {
     if (!Array.isArray(urls)) {
       throw new Error('async function `getUrls` must resolve to an Array')
     }
-    return buildSitemaps(urls, base)
+    return buildSitemaps(urls, base, size)
   }
 
-  const memoizedLoad = pMemoize(loadSitemaps, {
-    maxAge: SITEMAP_MAX_AGE
-  })
+  const memoizedLoad = pMemoize(loadSitemaps, { maxAge })
 
   return async (req, res, next) => {
     const isSitemapUrl = SITEMAP_URL_RE.test(req.url)
@@ -49,19 +51,19 @@ function expressSitemapXml (getUrls, base) {
   }
 }
 
-async function buildSitemaps (urls, base) {
+async function buildSitemaps (urls, base, size = MAX_SITEMAP_LENGTH) {
   const sitemaps = Object.create(null)
 
-  if (urls.length <= MAX_SITEMAP_LENGTH) {
+  if (urls.length <= size) {
     // If there is only one sitemap (i.e. there are less than 50,000 URLs)
     // then serve it directly at /sitemap.xml
     sitemaps['/sitemap.xml'] = buildSitemap(urls, base)
   } else {
     // Otherwise, serve a sitemap index at /sitemap.xml and sitemaps at
     // /sitemap-0.xml, /sitemap-1.xml, etc.
-    for (let i = 0; i * MAX_SITEMAP_LENGTH < urls.length; i++) {
-      const start = i * MAX_SITEMAP_LENGTH
-      const selectedUrls = urls.slice(start, start + MAX_SITEMAP_LENGTH)
+    for (let i = 0; i * size < urls.length; i++) {
+      const start = i * size
+      const selectedUrls = urls.slice(start, start + size)
       sitemaps[`/sitemap-${i}.xml`] = buildSitemap(selectedUrls, base)
     }
     sitemaps['/sitemap.xml'] = buildSitemapIndex(sitemaps, base)
@@ -71,7 +73,7 @@ async function buildSitemaps (urls, base) {
 }
 
 function buildSitemapIndex (sitemaps, base) {
-  const sitemapObjs = Object.keys(sitemaps).map((sitemapUrl, i) => {
+  const sitemapObjs = Object.keys(sitemaps).map(sitemapUrl => {
     return {
       loc: toAbsolute(sitemapUrl, base),
       lastmod: getTodayStr()
@@ -98,7 +100,9 @@ function buildSitemap (urls, base) {
 
     if (typeof url.url !== 'string') {
       throw new Error(
-        `Invalid sitemap url object, missing 'url' property: ${JSON.stringify(url)}`
+        `Invalid sitemap url object, missing 'url' property: ${JSON.stringify(
+          url
+        )}`
       )
     }
 

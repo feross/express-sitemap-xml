@@ -29,6 +29,66 @@ test('basic usage', t => {
   })
 })
 
+test('nested base url', t => {
+  t.plan(2)
+
+  const urls = ['/sitemap-0.xml', '/sitemap-1.xml', '/sitemap-2.xml']
+
+  buildSitemaps(urls, 'https://api.teslahunt.io/cars/sitemap').then(
+    sitemaps => {
+      t.deepEqual(new Set(Object.keys(sitemaps)), new Set(['/sitemap.xml']))
+
+      t.equal(
+        sitemaps['/sitemap.xml'],
+        stripIndent`
+      <?xml version="1.0" encoding="utf-8"?>
+      <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+        <url>
+          <loc>https://api.teslahunt.io/cars/sitemap/sitemap-0.xml</loc>
+        </url>
+        <url>
+          <loc>https://api.teslahunt.io/cars/sitemap/sitemap-1.xml</loc>
+        </url>
+        <url>
+          <loc>https://api.teslahunt.io/cars/sitemap/sitemap-2.xml</loc>
+        </url>
+      </urlset>
+    `
+      )
+    }
+  )
+})
+
+test('nested base url with trailing slash', t => {
+  t.plan(2)
+
+  const urls = ['/sitemap-0.xml', '/sitemap-1.xml', '/sitemap-2.xml']
+
+  buildSitemaps(urls, 'https://api.teslahunt.io/cars/sitemap/').then(
+    sitemaps => {
+      t.deepEqual(new Set(Object.keys(sitemaps)), new Set(['/sitemap.xml']))
+
+      t.equal(
+        sitemaps['/sitemap.xml'],
+        stripIndent`
+      <?xml version="1.0" encoding="utf-8"?>
+      <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+        <url>
+          <loc>https://api.teslahunt.io/cars/sitemap/sitemap-0.xml</loc>
+        </url>
+        <url>
+          <loc>https://api.teslahunt.io/cars/sitemap/sitemap-1.xml</loc>
+        </url>
+        <url>
+          <loc>https://api.teslahunt.io/cars/sitemap/sitemap-2.xml</loc>
+        </url>
+      </urlset>
+    `
+      )
+    }
+  )
+})
+
 test('usage with all options', t => {
   t.plan(2)
 

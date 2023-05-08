@@ -16,6 +16,12 @@ function removeTrailingSlash (str) {
   return str.replace(TRAILING_SLASH_RE, '')
 }
 
+function isSitemapUrl(url) {
+  // Check if the URL contains "sitemap" and ends with ".xml"
+  const regex = /\/sitemap[^/]*\.xml$/i;
+  return regex.test(url);
+}
+
 function expressSitemapXml (
   getUrls,
   base,
@@ -33,7 +39,15 @@ function expressSitemapXml (
     if (!Array.isArray(urls)) {
       throw new Error('async function `getUrls` must resolve to an Array')
     }
-    return buildSitemaps(urls, base, size)
+
+    // Pull the references to sitemaps from the URLs.
+    const extraSitemaps = urls.filter(isSitemapUrl);
+    const extraSitemapsSet = new Set(extraSitemaps); // using Set for performance.
+    const urlsWithoutExtraSitemaps = urls.filter(
+      (url) => !extraSitemapsSet.has(url)
+    );
+
+    return buildSitemaps(urlsWithoutExtraSitemaps, base, size, extraSitemaps);
   }
 
   const memoizedLoad = pMemoize(loadSitemaps, { maxAge })
@@ -51,10 +65,13 @@ function expressSitemapXml (
   }
 }
 
-async function buildSitemaps (urls, base, size = MAX_SITEMAP_LENGTH) {
+async function buildSitemaps (urls, base, size = MAX_SITEMAP_LENGTH, extraSitemaps = []) {
   const sitemaps = Object.create(null)
 
-  if (urls.length <= size) {
+  // We want all sitemaps in the sitemap index, so even if there's fewer than
+  // 50,000 URLs, we still want to create a sitemap index and isolate it from
+  // the URLs if there are extra sitemaps pulled from the URLs.
+  if (urls.length <= size && extraSitemaps.length === 0) {
     // If there is only one sitemap (i.e. there are less than 50,000 URLs)
     // then serve it directly at /sitemap.xml
     sitemaps['/sitemap.xml'] = buildSitemap(urls, base)
@@ -66,6 +83,12 @@ async function buildSitemaps (urls, base, size = MAX_SITEMAP_LENGTH) {
       const selectedUrls = urls.slice(start, start + size)
       sitemaps[`/sitemap-${i}.xml`] = buildSitemap(selectedUrls, base)
     }
+    
+    // Add the extra sitemaps to the sitemap index.
+    for (const extraSitemap of extraSitemaps) {
+        sitemaps[extraSitemap] = []; // empty array because we're not building these.
+    }
+    
     sitemaps['/sitemap.xml'] = buildSitemapIndex(sitemaps, base)
   }
 

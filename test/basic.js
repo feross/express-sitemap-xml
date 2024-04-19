@@ -144,6 +144,48 @@ test('usage with all options', t => {
   })
 })
 
+test('usage with images', t => {
+  t.plan(2)
+
+  const urls = [
+    {
+      url: '/1',
+      image: '/1.png'
+    },
+    {
+      url: '/2',
+      image: ['/2.png', '/3.png']
+    },
+  ]
+
+  buildSitemaps(urls, 'https://bitmidi.com').then(sitemaps => {
+    t.deepEqual(new Set(Object.keys(sitemaps)), new Set(['/sitemap.xml']))
+
+    console.log(sitemaps['/sitemap.xml'])
+
+    t.equal(sitemaps['/sitemap.xml'], stripIndent`
+      <?xml version="1.0" encoding="utf-8"?>
+      <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+        <url>
+          <loc>https://bitmidi.com/1</loc>
+          <image:image>
+            <image:loc>https://bitmidi.com/1.png</image:loc>
+          </image:image>
+        </url>
+        <url>
+          <loc>https://bitmidi.com/2</loc>
+          <image:image>
+            <image:loc>https://bitmidi.com/2.png</image:loc>
+          </image:image>
+          <image:image>
+            <image:loc>https://bitmidi.com/3.png</image:loc>
+          </image:image>
+        </url>
+      </urlset>
+    `)
+  })
+})
+
 test('large test: use sitemap index for > 50,000 urls', t => {
   t.plan(4)
 

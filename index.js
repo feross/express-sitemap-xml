@@ -118,6 +118,19 @@ function buildSitemap (urls, base) {
     if (typeof url.changeFreq === 'string') {
       urlObj.changefreq = url.changeFreq
     }
+
+    if (typeof url.image === 'string') {
+      urlObj['image:image'] = {
+        'image:loc': toAbsolute(url.image, base)
+      }
+    } else if (Array.isArray(url.image)) {
+      urlObj['image:image'] = url.image.map(image => {
+        return {
+          'image:loc': toAbsolute(image, base)
+        }
+      })
+    }
+
     return urlObj
   })
 

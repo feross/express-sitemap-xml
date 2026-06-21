@@ -38,7 +38,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/feross/express-sitemap-xml.git"
+    "url": "git+https://github.com/feross/express-sitemap-xml.git"
   },
   "scripts": {
     "test": "standard && tape test/**/*.js"
